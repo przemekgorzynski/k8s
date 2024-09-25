@@ -1,0 +1,78 @@
+#cloud-config
+# This is the user-data configuration file for cloud-init. By default this sets
+# up an initial user called "ubuntu" with password "ubuntu", which must be
+# changed at first login. However, many additional actions can be initiated on
+# first boot from this file. The cloud-init documentation has more details:
+#
+# https://cloudinit.readthedocs.io/
+
+hostname: k8s-master
+manage_etc_hosts: true
+
+apt:
+  conf: |
+    Acquire {
+      Check-Date "false";
+    };
+
+# Create the 'admins' group
+groups:
+  - name: admins
+    system: true
+
+# Define user 'przemek' and add to groups including 'admins'
+users:
+  - name: przemek
+    groups: admins,users,adm,dialout,audio,netdev,video,plugdev,cdrom,games,input,gpio,spi,i2c,render,sudo
+    shell: /bin/bash
+    lock_passwd: false
+    passwd: ""
+    ssh_import_id:
+      - gh:przemekgorzynski
+
+## Update apt database and upgrade packages on first boot
+package_update: true
+package_upgrade: true
+
+## Install additional packages on first boot
+packages:
+  - avahi-daemon
+  - curl
+  - network-manager
+  - git
+  - net-tools
+  - vim
+  - wget
+  - ufw
+  - python3-pip
+
+
+# Disable SSH password authentication
+write_files:
+  - path: /etc/ssh/sshd_config
+    content: |
+      PasswordAuthentication no
+      PermitRootLogin no
+
+  # Create sudoers file for admins group
+  - path: /etc/sudoers.d/admins
+    content: |
+      %admins ALL=(ALL) NOPASSWD:ALL
+    permissions: '0440'
+
+  # Add custom entries to /etc/hosts
+  - path: /etc/hosts
+    content: |
+      10.0.0.100   k8s-master
+      10.0.0.101   k8s-node1
+    append: true
+
+runcmd:
+  - systemctl restart sshd
+
+# Restart the node at the end of cloud-init
+power_state:
+  mode: reboot
+  message: "Rebooting the system to apply all configurations."
+  timeout: 30  # Time in seconds before the reboot
+  condition: True

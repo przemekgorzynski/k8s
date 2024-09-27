@@ -1,0 +1,20 @@
+---
+all:
+  vars:
+    ansible_user: przemek
+    standard_packages:
+      - apt-transport-https
+      - ca-certificates
+      - software-properties-common
+      - curl
+      - network-manager
+      - git
+      - net-tools
+      - vim
+      - wget
+
+  hosts:
+    master:
+      ansible_host: 10.0.0.100
+    node1:
+      ansible_host: 10.0.0.101

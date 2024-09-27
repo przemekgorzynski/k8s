@@ -1,6 +1,6 @@
 ---
-- name: Base config
-  hosts: all
+- name: K8s bootstrap
+  hosts: master
   gather_facts: true
   become: true
   become_method: sudo
@@ -13,6 +13,11 @@
         - always
 
   tasks:
+    - name: Import APT packager manager tasks
+      ansible.builtin.import_tasks:
+        file: tasks/apt.yml
+      tags:
+        - apt
     - name: Import container runtime tasks
       ansible.builtin.import_tasks:
         file: tasks/container_runtime.yml
@@ -23,3 +28,4 @@
         file: tasks/prerequisites.yml
       tags:
         - prerequisites
+

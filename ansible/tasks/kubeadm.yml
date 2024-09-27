@@ -1,0 +1,42 @@
+---
+- name: Display the default IPv4 address
+  debug:
+    msg: "The default IP address is {{ ansible_default_ipv4.address }}"
+
+- name: Check if kubeadm has already run
+  stat:
+    path: "/etc/kubernetes/pki/ca.key"
+  register: kubeadm_ca
+
+- name: Init Kubernetes cluster
+  command: >
+    kubeadm init --service-cidr {{ service_cidr }} \
+                 --kubernetes-version {{ kube_version }} \
+                 --pod-network-cidr {{ pod_network_cidr }} \
+                 --apiserver-advertise-address {{ ansible_default_ipv4.address }} \
+                 --token {{ k8s_token }}
+  register: init_cluster
+  when: not kubeadm_ca.stat.exists
+  run_once: true
+
+- name: Create Kubernetes config directory
+  file:
+    path: "/home/{{ ansible_user }}/.kube"
+    state: directory
+
+- name: Copy admin.conf to home directory
+  when: init_cluster is succeeded
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: "/home/{{ ansible_user }}/.kube/config"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: 0755
+    remote_src: true
+  become: true
+
+- name: Install Calico VNet
+  command: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+  environment:
+    KUBECONFIG: /home/{{ ansible_user }}/.kube/config
+  become: true

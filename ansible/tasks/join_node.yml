@@ -1,0 +1,21 @@
+---
+- name: Check if kubelet.conf exists
+  stat:
+    path: "/etc/kubernetes/kubelet.conf"
+  register: kubelet_conf
+
+- name: Join to Kubernetes cluster
+  shell: |
+    kubeadm join --token {{ k8s_token }} \
+                --discovery-token-unsafe-skip-ca-verification \
+                {{ hostvars['k8s-master'].ansible_host }}:6443
+  register: join_cluster
+  # notify:
+  #   - Recreate kube-dns
+
+- name: Enable and check kubelet service
+  systemd:
+    name: kubelet
+    daemon_reload: yes
+    state: started
+    enabled: yes

@@ -1,7 +1,6 @@
 ---
 all:
   vars:
-    ubuntu_codename: jammy # 22.04 LTS
     ansible_user: przemek
     standard_packages:
       - apt-transport-https
@@ -14,13 +13,24 @@ all:
       - vim
       - wget
       - gpg
+      - gnupg2
     k8s_pkgs:
       - kubelet
       - kubeadm
       - kubectl
+    k8s_token: b0r7b8.8d1728519297d79c
 
-  hosts:
-    master:
-      ansible_host: 10.0.0.100
-    node1:
-      ansible_host: 10.0.0.101
+  children:
+    controlPlane:
+      hosts:
+        k8s-master:
+          ansible_host: 10.0.0.100
+          kube_version: "v1.31.0"
+          service_cidr: "10.96.0.0/12"
+          pod_network_cidr: "10.244.0.0/16"
+          kubeadmin_config: /etc/kubernetes/admin.conf
+          enable_dashboard: false
+    nodes:
+      hosts:
+        k8s-node1:
+          ansible_host: 10.0.0.101

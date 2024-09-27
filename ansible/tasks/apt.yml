@@ -43,3 +43,13 @@
   apt:
     name: "{{ k8s_pkgs }}"
     state: present
+
+- name: Pin kubelet, kubeadm, and kubectl versions
+  command: >
+    apt-mark hold kubelet kubeadm kubectl
+
+- name: Enable and start the kubelet service
+  systemd:
+    name: kubelet
+    state: started
+    enabled: true

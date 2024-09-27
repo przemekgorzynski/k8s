@@ -1,13 +1,8 @@
 ---
 - name: Install containerd
   apt:
-    name:
-      - containerd
+    name: containerd
     state: latest
-
-- name: Pause 30s
-  pause:
-    seconds: 30
 
 - name: Create the containerd config directory
   file:
@@ -25,14 +20,15 @@
     group: root
     mode: '0644'
 
-- name: Overwrite the content of a file
-  copy:
-    dest: /etc/containerd/config.toml
-    content: |
-      [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
-        [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc.options]
-          SystemdCgroup = true
-    force: true
+- name: Generate containerd default config and save to /etc/containerd/config.toml
+  command: >
+    bash -c "containerd config default | tee /etc/containerd/config.toml"
+
+- name: Ensure SystemdCgroup is set to true in /etc/containerd/config.toml
+  replace:
+    path: /etc/containerd/config.toml
+    regexp: '^\s*SystemdCgroup = false'
+    replace: 'SystemdCgroup = true'
 
 - name: Restart containerd
   systemd:

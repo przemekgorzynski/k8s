@@ -1,0 +1,20 @@
+---
+- name: Base config
+  hosts: all
+  gather_facts: true
+  become: true
+  become_method: sudo
+
+  pre_tasks:
+    - name: Check connectivity
+      action: ansible.builtin.ping
+      tags:
+        - pre
+        - always
+
+  tasks:
+    - name: Import container runtime task
+      ansible.builtin.include_tasks:
+        file: tasks/container_runtime.yml
+      tags:
+        - container_runtime

@@ -1,0 +1,45 @@
+---
+- name: Create /etc/apt/keyrings directory
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Download the Kubernetes public signing key
+  shell: >
+    curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+  args:
+    creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg  # Only run if the file does not exist
+
+- name: Add Kubernetes apt repository
+  copy:
+    dest: /etc/apt/sources.list.d/kubernetes.list
+    content: 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /'
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Update the APT package cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Update OS packages
+  apt:
+    update_cache: true
+    upgrade: true
+    autoremove: yes
+    cache_valid_time: 3600
+
+- name: Ensure necessary dependencies are installed
+  apt:
+    name: "{{ standard_packages }}"
+    state: present
+    update_cache: true
+
+- name: Install kubelet, kubeadm, and kubectl
+  apt:
+    name: "{{ k8s_pkgs }}"
+    state: present

@@ -1,0 +1,69 @@
+---
+- name: Create sysctl configuration file
+  copy:
+    dest: /etc/sysctl.d/k8s.conf
+    content: |
+      net.ipv4.ip_forward = 1
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Apply sysctl parameters without reboot
+  command: sysctl --system
+
+- name: Verify net.ipv4.ip_forward is set to 1
+  command: sysctl net.ipv4.ip_forward
+  register: sysctl_output
+
+- name: Ensure net.ipv4.ip_forward is set to 1
+  assert:
+    that:
+      - sysctl_output.stdout == 'net.ipv4.ip_forward = 1'
+    success_msg: "net.ipv4.ip_forward is correctly set to 1."
+    fail_msg: "net.ipv4.ip_forward is not set to 1."
+
+- name: Download and install cri-dockerd
+  tags:
+    - cri_dockerd
+  block:
+    - name: Download cri-dockerd
+      ansible.builtin.get_url:
+        url: https://github.com/Mirantis/cri-dockerd/releases/download/v{{ cri_dockerd_version }}/cri-dockerd-{{ cri_dockerd_version }}.arm64.tgz
+        dest: /tmp/cri-dockerd-{{ cri_dockerd_version }}.arm64.tgz
+        mode: '0770'
+    - name: Extract cri-dockerd .tgz file
+      unarchive:
+        src: "/tmp/cri-dockerd-{{ cri_dockerd_version }}.arm64.tgz"
+        dest: "/tmp"
+        remote_src: yes
+    - name: Copy cri-dockerd binary to /usr/local/bin
+      copy:
+        src: "/tmp/cri-dockerd/cri-dockerd"
+        dest: "/usr/local/bin/cri-dockerd"
+        mode: '0755'
+        remote_src: yes
+    - name: Clean up .tgz file
+      file:
+        path: "/tmp/cri-dockerd-{{ cri_dockerd_version }}.arm64.tgz"
+        state: absent
+    - name: Create systemd service file for cri-dockerd
+      copy:
+        dest: /etc/systemd/system/cri-docker.service
+        content: |
+          [Unit]
+          Description=CRI Docker
+          After=network.target
+
+          [Service]
+          ExecStart=/usr/local/bin/cri-dockerd
+          Restart=always
+
+          [Install]
+          WantedBy=multi-user.target
+    - name: Reload systemd to pick up new service
+      command: systemctl daemon-reload
+    - name: Verify cri-dockerd installation
+      command: cri-dockerd --version
+      register: cri_dockerd_version
+    - debug:
+        var: cri_dockerd_version.stdout

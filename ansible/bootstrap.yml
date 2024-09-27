@@ -13,8 +13,13 @@
         - always
 
   tasks:
-    - name: Import container runtime task
-      ansible.builtin.include_tasks:
+    - name: Import container runtime tasks
+      ansible.builtin.import_tasks:
         file: tasks/container_runtime.yml
       tags:
         - container_runtime
+    - name: Import prerequisites tasks
+      ansible.builtin.import_tasks:
+        file: tasks/prerequisites.yml
+      tags:
+        - prerequisites

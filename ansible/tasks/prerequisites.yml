@@ -1,26 +1,46 @@
 ---
-- name: Create sysctl configuration file
-  copy:
-    dest: /etc/sysctl.d/k8s.conf
+- name: Enable cgroup in /boot/firmware/cmdline.txt
+  shell: |
+    cgroup="$(head -n1 /boot/firmware/cmdline.txt) cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory"
+    echo $cgroup | sudo tee /boot/firmware/cmdline.txt
+
+- name: Create /etc/modules-load.d/k8s.conf file with required modules
+  ansible.builtin.copy:
     content: |
-      net.ipv4.ip_forward = 1
+      overlay
+      br_netfilter
+    dest: /etc/modules-load.d/k8s.conf
     owner: root
     group: root
     mode: '0644'
 
+- name: Modify sysctl configuration file
+  copy:
+    dest: /etc/sysctl.d/k8s.conf
+    content: |
+      net.bridge.bridge-nf-call-iptables  = 1
+      net.ipv4.ip_forward                 = 1
+      net.bridge.bridge-nf-call-ip6tables = 1
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: modprobe overlay
+  ansible.builtin.command: modprobe overlay
+
+- name: modprobe br_netfilter
+  ansible.builtin.command: modprobe br_netfilter
+
 - name: Apply sysctl parameters without reboot
   command: sysctl --system
 
-- name: Verify net.ipv4.ip_forward is set to 1
-  command: sysctl net.ipv4.ip_forward
-  register: sysctl_output
-
-- name: Ensure net.ipv4.ip_forward is set to 1
-  assert:
-    that:
-      - sysctl_output.stdout == 'net.ipv4.ip_forward = 1'
-    success_msg: "net.ipv4.ip_forward is correctly set to 1."
-    fail_msg: "net.ipv4.ip_forward is not set to 1."
-
 - name: Disable all swap
   command: swapoff -a
+
+- name: Comment out swap entry in /etc/fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    regexp: '^\s*[^#]\s*swap\s+'
+    line: '#\g<0>'
+    backrefs: yes
+

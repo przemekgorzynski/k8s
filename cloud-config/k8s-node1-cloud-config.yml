@@ -53,7 +53,7 @@ write_files:
     content: |
       10.0.0.100  k8s-master
       10.0.0.101  k8s-node1
-      10.0.0.102  k8s-node2 
+      10.0.0.102  k8s-node2
     append: true
 
   # Create sudoers file for admins group

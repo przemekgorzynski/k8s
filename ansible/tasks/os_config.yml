@@ -1,0 +1,20 @@
+---
+- name: Add dynamic entry to /etc/hosts
+  ansible.builtin.lineinfile:
+    path: /etc/hosts
+    line: "127.0.0.1 {{ inventory_hostname }}"
+
+- name: Create .alias file with custom aliases
+  ansible.builtin.copy:
+    dest: "/home/{{ ansible_user }}/.alias"
+    content: |
+      alias k='kubectl '
+    mode: '0644'
+
+- name: Ensure .alias is sourced in .profile
+  ansible.builtin.lineinfile:
+    dest: "/home/{{ ansible_user }}/.profile"
+    line: "if [ -f ~/.alias ]; then . ~/.alias; fi"
+    create: true
+  become: true
+  become_user: "{{ ansible_user }}"

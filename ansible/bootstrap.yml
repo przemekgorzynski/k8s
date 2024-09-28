@@ -1,6 +1,6 @@
 ---
-- name: K8s bootstrap
-  hosts: master
+- name: K8s pre-config
+  hosts: all
   gather_facts: true
   become: true
   become_method: sudo
@@ -13,6 +13,16 @@
         - always
 
   tasks:
+    - name: Base OS config
+      ansible.builtin.import_tasks:
+        file: tasks/os_config.yml
+      tags:
+        - os
+    - name: Import prerequisites tasks
+      ansible.builtin.import_tasks:
+        file: tasks/prerequisites.yml
+      tags:
+        - prerequisites
     - name: Import APT packager manager tasks
       ansible.builtin.import_tasks:
         file: tasks/apt.yml
@@ -23,9 +33,53 @@
         file: tasks/container_runtime.yml
       tags:
         - container_runtime
-    - name: Import prerequisites tasks
+    - name: Reboot
       ansible.builtin.import_tasks:
-        file: tasks/prerequisites.yml
+        file: tasks/reboot.yml
       tags:
-        - prerequisites
+        - reboot
 
+
+##################################################
+
+- name: K8s bootstrap
+  hosts: controlPlane
+  gather_facts: true
+  become: true
+  become_method: sudo
+
+  pre_tasks:
+    - name: Check connectivity
+      action: ansible.builtin.ping
+      tags:
+        - pre
+        - always
+
+  tasks:
+    - name: Import Kubeadm tasks
+      ansible.builtin.import_tasks:
+        file: tasks/kubeadm.yml
+      tags:
+        - kubeadm
+
+##################################################
+
+- name: K8s join nodes
+  hosts: nodes
+  gather_facts: true
+  become: true
+  become_method: sudo
+
+  pre_tasks:
+    - name: Check connectivity
+      action: ansible.builtin.ping
+      tags:
+        - pre
+        - always
+
+  tasks:
+    - name: Import join nodes tasks
+      ansible.builtin.import_tasks:
+        file: tasks/join_node.yml
+      tags:
+        - join_node

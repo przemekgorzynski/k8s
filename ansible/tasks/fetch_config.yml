@@ -1,0 +1,17 @@
+---
+- name: Create Kubernetes config directory
+  file:
+    path: "~/.kube"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  delegate_to: localhost
+
+- name: Fetch kubeconfig "{{ kubeadmin_config }}" from master node
+  fetch:
+    src: "{{ kubeadmin_config }}"
+    dest: "~/.kube/config"
+    flat: yes
+    mode: 0644
+  become: true
+  become_method: sudo

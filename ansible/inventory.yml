@@ -21,6 +21,10 @@ all:
     k8s_token: b0r7b8.8d1728519297d79c
 
   children:
+    local:
+      hosts:
+        localhost:
+          ansible_connection: local
     controlPlane:
       hosts:
         k8s-master:

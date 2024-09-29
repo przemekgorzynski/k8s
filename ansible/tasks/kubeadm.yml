@@ -27,7 +27,7 @@
 - name: Copy admin.conf to home directory
   when: init_cluster is succeeded
   copy:
-    src: /etc/kubernetes/admin.conf
+    src: "{{ kubeadmin_config }}"
     dest: "/home/{{ ansible_user }}/.kube/config"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
@@ -40,3 +40,4 @@
   environment:
     KUBECONFIG: /home/{{ ansible_user }}/.kube/config
   become: true
+  when: not kubeadm_ca.stat.exists

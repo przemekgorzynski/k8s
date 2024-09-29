@@ -1,6 +1,6 @@
 ---
 - name: K8s pre-config
-  hosts: all
+  hosts: all:!localhost
   gather_facts: true
   become: true
   become_method: sudo
@@ -83,3 +83,23 @@
         file: tasks/join_node.yml
       tags:
         - join_node
+
+##################################################
+
+- name: Fetch Kubeconfig to local
+  hosts: controlPlane
+  gather_facts: true
+
+  pre_tasks:
+    - name: Check connectivity
+      action: ansible.builtin.ping
+      tags:
+        - pre
+        - always
+
+  tasks:
+    - name: Import fetch config tasks
+      ansible.builtin.import_tasks:
+        file: tasks/fetch_config.yml
+      tags:
+        - fetch_config

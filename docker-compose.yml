@@ -1,0 +1,19 @@
+---
+version: '3.8'
+services:
+
+  working_container:
+    container_name: k8s_work
+    image: k8s_work
+    build:
+      dockerfile: Dockerfile
+      context: .
+    env_file:
+      - .env
+    command: ["sh", "-c", "tail -f /dev/null"]  # This command keeps the container running forever
+    volumes:
+      - '${KUBE_PATH}:/root/.kube'
+      - '${REPO_PATH}:/repo'
+    ports:
+      - 8000:8000
+    restart: unless-stopped

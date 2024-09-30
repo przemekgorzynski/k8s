@@ -2,6 +2,7 @@
 
 - [Node preparation](#node-preparation)
 - [Initializaing K8s cluster](#initializaing-k8s-cluster)
+- [Support container](#support-container)
 - [Exam Preparation && wiki](#empty)
     - [CKAD](wiki/CKAD/main.md)
     - [CKA](wiki/CKA/main.md)
@@ -80,4 +81,21 @@ To create K8s cluster on previously prepared nodes just run Ansible playbook
 ```bash
 cd ansible && \
 ansible-playbok -i inventory bootstrap.yml
+```
+
+## Support container
+You can use support container to interact with cluster. It some tools preinstalled
+- kubectl
+- helm
+- kustomize
+
+It will use/mount your local `~/.kube/config` file. Set it up in `.env` file.
+
+Just simply run
+```bash
+docker-compose up -d
+```
+and login to container
+```
+docker exec -it --rm k8s_work bash
 ```

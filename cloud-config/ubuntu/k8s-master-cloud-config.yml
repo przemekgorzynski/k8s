@@ -7,6 +7,8 @@ manage_etc_hosts: false
 
 apt:
   conf: |
+    APT::Periodic::Update-Package-Lists "0";
+    APT::Periodic::Unattended-Upgrade "0";
     Acquire {
       Check-Date "false";
     };
@@ -34,6 +36,7 @@ users:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILZBY8AiU6cRPY+HCUQ2jr5Sti7Xs5UpS5Ke00yYTkia Przemyslaw Gorzynski
 
 package_update: true
+package_upgrade: true
 
 ## Install additional packages on first boot
 packages:
@@ -46,6 +49,10 @@ packages:
   - wget
   - ufw
   - python3-pip
+
+package_remove:
+  - apparmor
+  - unattended-upgrades
 
 write_files:
   # Add custom entries to /etc/hosts

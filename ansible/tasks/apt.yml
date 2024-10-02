@@ -39,6 +39,12 @@
     state: present
     update_cache: true
 
+- name: Ensure not necessary packages are removed
+  apt:
+    name: "{{ packages_to_remove }}"
+    state: absent
+    purge: true
+
 - name: Install kubelet, kubeadm, and kubectl
   apt:
     name: "{{ k8s_pkgs }}"

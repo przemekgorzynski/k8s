@@ -96,13 +96,15 @@ cloud_init() {
     fi
 
     # Create SSH configuration file
-    echo "Creating SSH configuration..."
+    echo "Creating SSH configuration"
     touch /mnt/boot/ssh
+    echo "OK"
 
     echo "Copying $cloud_config_file file"
     # Copy user-data configuration to boot partition
     if [ -f "$cloud_config_file" ]; then
         cp "$cloud_config_file" /mnt/boot/user-data
+        echo "OK"
     else
         echo "Error: user-data file does not exist."
         exit 1

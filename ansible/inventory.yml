@@ -14,6 +14,8 @@ all:
       - wget
       - gpg
       - gnupg2
+    packages_to_remove:
+      - apparmor
     k8s_pkgs:
       - kubelet
       - kubeadm

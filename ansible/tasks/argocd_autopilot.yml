@@ -1,0 +1,69 @@
+---
+- name: Get GitHub token from BitWarden
+  block:
+    - name: GitHub token
+      ansible.builtin.set_fact:
+        gh_token: "{{ lookup('bitwarden.secrets.lookup', '9d4244ca-90d0-4770-8473-b1fe01452a5b') }}"
+      no_log: true
+      delegate_to: localhost
+
+- name: Check if argocd application is already deployed
+  ansible.builtin.shell: |
+    kubectl get applications.argoproj.io argo-cd -n argocd --ignore-not-found
+  register: check_application
+  changed_when: false
+
+- name: Install ArgoCD
+  when: check_application.stdout == ""
+  block:
+    - name: Get the latest version of argocd-autopilot
+      ansible.builtin.shell: |
+        curl --silent "https://api.github.com/repos/argoproj-labs/argocd-autopilot/releases/latest" | 
+        grep '"tag_name"' | 
+        sed -E 's/.*"([^"]+)".*/\1/'
+      register: version
+
+    - name: Download and extract argocd-autopilot
+      ansible.builtin.shell: |
+        curl -L --output argocd-autopilot-linux-{{ hosts_arch }}.tar.gz "https://github.com/argoproj-labs/argocd-autopilot/releases/download/{{ version.stdout }}/argocd-autopilot-linux-{{ hosts_arch }}.tar.gz" && \
+        tar zxvf argocd-autopilot-linux-{{ hosts_arch }}.tar.gz
+      args:
+        chdir: /tmp
+
+    - name: Move the binary to /usr/local/bin
+      ansible.builtin.command: mv ./argocd-autopilot-linux-{{ hosts_arch }} /usr/local/bin/argocd-autopilot
+      args:
+        chdir: /tmp
+      become: true
+      become_method: sudo
+
+    - name: Check the binary version
+      ansible.builtin.shell: argocd-autopilot version
+      register: installation_check
+
+    - name: Display binary version
+      debug:
+        var: installation_check.stdout
+
+    - name: Bootstrap argocd-autopilot repo
+      ansible.builtin.shell: |
+        argocd-autopilot repo bootstrap
+      environment:
+        GIT_TOKEN: "{{ gh_token }}"
+        GIT_REPO: "{{ argocd.workload_repo }}"
+      register: bootstrap_result
+
+    - name: Display bootstrap result
+      debug:
+        var: bootstrap_result.stdout
+
+    - name: Get initial admin password from argocd-initial-admin-secret
+      ansible.builtin.shell: |
+        kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 --decode
+      register: argocd_password
+
+    - name: Print the initial admin password
+      debug:
+        msg: |
+          The argocd-server initial admin password is: {{ argocd_password.stdout }}
+          kubectl port-forward -n argocd svc/argocd-server 8080:80

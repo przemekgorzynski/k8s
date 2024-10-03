@@ -55,6 +55,26 @@ Copying cloud-config/ubuntu/k8s-master-cloud-config.yml file
 
 ## Initializaing K8s cluster
 
+By default cluster comes with ArgoCD pre-installed using ArgoCD Autopilot
+
+https://argocd-autopilot.readthedocs.io/en/stable/
+
+Before cluster initialization:
+
+- set Bitwarden access token variable. Will be used while fetching gh_token for `ArgoCD Autopilot` setting up.
+
+```bash
+export BWS_ACCESS_TOKEN=0.57ff9fdc-db91-4ec7-806.....<< redacted >>
+```
+
+- install Ansible collections && Python Bitwaden libraries
+
+```bash
+cd ansible && \
+ansible-galaxy collection install -r requirments.yml && \
+pip install bitwarden-sdk
+``` 
+
 To create K8s cluster on previously prepared nodes just run Ansible playbook
 
 ```bash

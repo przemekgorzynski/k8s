@@ -1,3 +1,5 @@
+- `Cluster Role and ClusterRoleBindings are on namespace scope`
+
 ## Specify cluster role `cluster-superhero` and cluster group `Cluster-superheoes`
 
 ```bash
@@ -18,4 +20,3 @@ Check permissions
 
 ```bash
 kubectl auth can-i '*' '*' --as-group="${k8s_group}" --as="${k8s_user}
-```

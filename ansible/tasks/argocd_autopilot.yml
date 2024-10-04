@@ -3,7 +3,7 @@
   block:
     - name: GitHub token
       ansible.builtin.set_fact:
-        gh_token: "{{ lookup('bitwarden.secrets.lookup', '9d4244ca-90d0-4770-8473-b1fe01452a5b') }}"
+        gh_token: "{{ lookup('bitwarden.secrets.lookup', '9d4244ca-90d0-4770-8473-b1fe01452a5b')}}"
       no_log: true
       delegate_to: localhost
 
@@ -14,7 +14,6 @@
   changed_when: false
 
 - name: Install ArgoCD
-  when: check_application.stdout == ""
   block:
     - name: Get the latest version of argocd-autopilot
       ansible.builtin.shell: |
@@ -64,6 +63,6 @@
 
     - name: Print the initial admin password
       debug:
-        msg: |
-          The argocd-server initial admin password is: {{ argocd_password.stdout }}
-          kubectl port-forward -n argocd svc/argocd-server 8080:80
+        msg:
+          - "The argocd-server initial admin password is: {{ argocd_password.stdout }}"
+          - "kubectl port-forward -n argocd svc/argocd-server 8080:80"

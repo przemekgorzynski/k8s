@@ -8,6 +8,7 @@ Topics:
 - [Service Account](docs/service_account.md)
 - [Role Binding](docs/role_binding.md)
 - [Cluster Role Binding](docs/cluster_role_binding.md)
+- [Resource Requirements](docs/resource_requirements.md)
 
 Hints:
-- [Pod stuck in Termination state](docs/Pod_stuck_in_termination_state.md)
+- [Namespace stuck in Termination state](docs/Namesoace_stuck_in_termination_state.md)

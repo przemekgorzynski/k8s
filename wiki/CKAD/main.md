@@ -9,6 +9,7 @@ Topics:
 - [Role Binding](docs/role_binding.md)
 - [Cluster Role Binding](docs/cluster_role_binding.md)
 - [Resource Requirements](docs/resource_requirements.md)
+- [Taints and Tolerations](docs/taint_tolerations.md)
 
 Hints:
 - [Namespace stuck in Termination state](docs/Namesoace_stuck_in_termination_state.md)

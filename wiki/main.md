@@ -1,6 +1,4 @@
 
-# CKAD
-
 Topics:
 
 - [Commands](docs/commands.md)
@@ -12,6 +10,10 @@ Topics:
 - [Taints and Tolerations](docs/taint_tolerations.md)
 - [Node Selector](docs/node_selector.md)
 - [Node Affinity](docs/node_affinity.md)
+- [Liveness & Rediness Probe](docs/liveness_rediness_probe.md)
+- [Deployments - blue-green / canary](docs/blue_green_canary.md)
+- [Job / cronjob ](docs/job_cronjob.md)
 
 Hints:
-- [Namespace stuck in Termination state](docs/Namesoace_stuck_in_termination_state.md)
+- [Metric Server](docs/hints/metrics_server.md)
+- [Namespace stuck in Termination state](docs/hints/Namesoace_stuck_in_termination_state.md)

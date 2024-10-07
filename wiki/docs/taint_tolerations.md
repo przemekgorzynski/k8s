@@ -11,7 +11,7 @@
 
 ## Tainting node
 
-```
+```bash
 kubectl taint nodes << NODE_NAME >> key=value:<< TAINT_EFFECT >>
 
 kubectl taint nodes node1 app=blue:NoSchedule

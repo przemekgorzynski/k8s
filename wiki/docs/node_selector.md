@@ -1,4 +1,5 @@
 - spiecify node to run on
+- cannot provide advances expressions line `NOT, OR`
 
 ```yml
 apiVersion: v1

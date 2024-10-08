@@ -2,10 +2,9 @@
 
 - [Node preparation](#node-preparation)
 - [Initializaing K8s cluster](#initializaing-k8s-cluster)
+- [Exam Preparation && wiki](#wiki/main.md)
 - [Support container](#support-container)
-- [Exam Preparation && wiki](#empty)
-    - [CKAD](wiki/CKAD/main.md)
-    - [CKA](wiki/CKA/main.md)
+
 
 ## Node preparation
 
@@ -83,6 +82,13 @@ cd ansible && \
 ansible-playbok -i inventory bootstrap.yml
 ```
 
+
+## ArgoCD-Autopilot
+
+```bash
+argocd-autopilot app create metal-lb --app https://github.com/przemekgorzynski/k8s_workload.git/apps/metal-lb/base --project default --wait-timeout 2m
+=======
+
 ## Support container
 You can use support container to interact with cluster. It some tools preinstalled
 - kubectl
@@ -98,4 +104,5 @@ docker-compose up -d
 and login to container
 ```
 docker exec -it --rm k8s_work bash
+
 ```

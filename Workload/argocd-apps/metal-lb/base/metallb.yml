@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb-system
+spec:
+  destination:
+    namespace: metallb-system
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: 'https://github.com/przemekgorzynski/k8s_workload.git'
+    targetRevision: HEAD # Consider using a specific branch or tag
+    path: helm-charts/metallb
+    helm:
+      valueFiles: # List your value files here if applicable
+        - values.yaml # Example value file
+  project: default
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true

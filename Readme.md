@@ -86,6 +86,10 @@ ansible-playbok -i inventory bootstrap.yml
 ## ArgoCD-Autopilot create APP
 
 ```bash
+argocd-autopilot project create default
+```
+
+```bash
 argocd-autopilot app create metal-lb --app https://github.com/przemekgorzynski/k8s_workload.git/apps/metal-lb/base --project default --wait-timeout 2m
 ```
 

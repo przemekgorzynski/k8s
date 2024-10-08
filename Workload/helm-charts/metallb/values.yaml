@@ -1,0 +1,12 @@
+---
+l2Advertisement:
+  name: my-l2-advertisement            # Specify the name for the L2Advertisement
+  namespace: metallb-system             # Define the namespace where it should be created
+  ipAddressPools:                        # List of IP address pools to be used
+    - my-ip-address-pool 
+
+ipAddressPool:
+  name: my-ip-address-pool             # Specify the name for the IPAddressPool
+  namespace: metallb-system             # Define the namespace where it should be created
+  addresses:                            # List of IP addresses or ranges to be used
+    - 85.222.50.121/32

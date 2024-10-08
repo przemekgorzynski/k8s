@@ -2,9 +2,7 @@
 
 - [Node preparation](#node-preparation)
 - [Initializaing K8s cluster](#initializaing-k8s-cluster)
-- [Exam Preparation && wiki](#empty)
-    - [CKAD](wiki/CKAD/main.md)
-    - [CKA](wiki/CKA/main.md)
+- [Exam Preparation && wiki](#wiki/main.md)
 
 ## Node preparation
 
@@ -60,4 +58,11 @@ To create K8s cluster on previously prepared nodes just run Ansible playbook
 ```bash
 cd ansible && \
 ansible-playbok -i inventory bootstrap.yml
+```
+
+
+## ArgoCD-Autopilot
+
+```bash
+argocd-autopilot app create metal-lb --app https://github.com/przemekgorzynski/k8s_workload.git/apps/metal-lb/base --project default --wait-timeout 2m
 ```

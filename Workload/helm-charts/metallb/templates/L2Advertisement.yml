@@ -1,0 +1,11 @@
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: {{ .Values.l2Advertisement.name }}
+  namespace: {{ .Values.l2Advertisement.namespace }}
+spec:
+  ipAddressPools:
+{{- range .Values.l2Advertisement.ipAddressPools }}
+    - {{ . }}
+{{- end }}

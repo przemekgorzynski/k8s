@@ -87,7 +87,6 @@ ansible-playbok -i inventory bootstrap.yml
 
 ```bash
 argocd-autopilot app create metal-lb --app https://github.com/przemekgorzynski/k8s_workload.git/apps/metal-lb/base --project default --wait-timeout 2m
-=======
 ```
 
 ## Support container

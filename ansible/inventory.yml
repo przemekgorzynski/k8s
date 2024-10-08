@@ -21,6 +21,7 @@ all:
       - kubeadm
       - kubectl
     k8s_token: b0r7b8.8d1728519297d79c
+    hosts_arch: arm64
 
   children:
     local:
@@ -36,6 +37,8 @@ all:
           pod_network_cidr: "10.244.0.0/16"
           kubeadmin_config: /etc/kubernetes/admin.conf
           enable_dashboard: false
+          argocd:
+            workload_repo: "https://github.com/przemekgorzynski/k8s_workload.git"
     nodes:
       hosts:
         k8s-node1:

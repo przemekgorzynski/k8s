@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/przemekgorzynski/k8s.git
-    targetRevision: argo_deploys # Consider using a specific branch or tag
+    targetRevision: HEAD # Consider using a specific branch or tag
     path: workload/helm-charts/metallb
     helm:
       valueFiles: # List your value files here if applicable

@@ -11,7 +11,7 @@ spec:
     path: workloads/helm-charts/metallb
     helm:
       valueFiles: # List your value files here if applicable
-        - values.yml # Example value file
+        - values.yaml # Example value file
   destination:
     namespace: metallb-system
     server: https://kubernetes.default.svc

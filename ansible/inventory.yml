@@ -22,6 +22,8 @@ all:
       - kubectl
     k8s_token: b0r7b8.8d1728519297d79c
     hosts_arch: arm64
+    crd:
+      - kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
 
   children:
     local:

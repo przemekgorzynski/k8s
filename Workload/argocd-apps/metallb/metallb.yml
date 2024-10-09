@@ -1,18 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: metallb-system
+  name: argocd
 spec:
   destination:
     namespace: metallb-system
     server: https://kubernetes.default.svc
   source:
-    repoURL: 'https://github.com/przemekgorzynski/k8s.git'
-    targetRevision: HEAD # Consider using a specific branch or tag
+    repoURL: https://github.com/przemekgorzynski/k8s.git
+    targetRevision: argo_deploys # Consider using a specific branch or tag
     path: workload/helm-charts/metallb
     helm:
       valueFiles: # List your value files here if applicable
-        - values.yaml # Example value file
+        - values.yml # Example value file
   project: default
   syncPolicy:
     automated:

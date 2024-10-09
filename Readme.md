@@ -92,11 +92,11 @@ argocd-autopilot project create default
 ```
 
 ```bash
-argocd-autopilot app create metal-lb --app https://github.com/przemekgorzynski/k8s.git/apps/metal-lb --project default --wait-timeout 2m
+argocd-autopilot app create metallb --app https://github.com/przemekgorzynski/k8s.git/workloads/argocd-apps/metallb --project default --wait-timeout 5m
 ```
 
 ```bash
-argocd-autopilot app delete metal-lb
+argocd-autopilot app delete metallb
 ```
 
 ## Support container

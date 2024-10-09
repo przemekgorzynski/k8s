@@ -13,7 +13,10 @@ Topics:
 - [Liveness & Rediness Probe](docs/liveness_rediness_probe.md)
 - [Deployments - blue-green / canary](docs/blue_green_canary.md)
 - [Job / cronjob ](docs/job_cronjob.md)
+- [Ingress](docs/ingress.md)
+- [Network Policy](docs/network_policy.md)
+- [Volumes](docs/volumes.md)
 
 Hints:
 - [Metric Server](docs/hints/metrics_server.md)
-- [Namespace stuck in Termination state](docs/hints/Namesoace_stuck_in_termination_state.md)
+- [Namespace stuck in Termination state](docs/hints/Namesoace_stuck_in_termination_state.md)s

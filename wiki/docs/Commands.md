@@ -1,9 +1,17 @@
 
+- [Kubectl](#kubectl)
 - [Pods](#pods)
 - [Deployments](#deployments)
 - [Services](#services)
 - [Secrets](#secrets)
 - [Rollouts](#rollouts)
+
+## KUBECTL
+- Switch to namespace
+
+    ```bash
+    kubectl config set-context --current --namespace=ingress-nginx
+    ```
 ## PODS
 - Run pod
 

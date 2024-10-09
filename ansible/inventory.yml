@@ -38,7 +38,7 @@ all:
           kubeadmin_config: /etc/kubernetes/admin.conf
           enable_dashboard: false
           argocd:
-            workload_repo: "https://github.com/przemekgorzynski/k8s_workload.git"
+            workload_repo: "https://github.com/przemekgorzynski/argocd-autopilot-boot.git"
     nodes:
       hosts:
         k8s-node1:

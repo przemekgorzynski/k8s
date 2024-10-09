@@ -3,17 +3,26 @@
   block:
     - name: GitHub token
       ansible.builtin.set_fact:
-        gh_token: "{{ lookup('bitwarden.secrets.lookup', '9d4244ca-90d0-4770-8473-b1fe01452a5b')}}"
-      no_log: true
+        gh_token: "{{ lookup('bitwarden.secrets.lookup', '9d4244ca-90d0-4770-8473-b1fe01452a5b') }}"
+      no_log: false
       delegate_to: localhost
 
-- name: Check if argocd application is already deployed
+# - name: Check if argocd application is already deployed
+#   ansible.builtin.shell: |
+#     kubectl get applications.argoproj.io argo-cd -n argocd --ignore-not-found
+#   register: check_application
+#   changed_when: false
+
+- name: Check if Argo CD CRD is installed
   ansible.builtin.shell: |
-    kubectl get applications.argoproj.io argo-cd -n argocd --ignore-not-found
-  register: check_application
+    kubectl get crd applications.argoproj.io --ignore-not-found
+  register: check_crd
   changed_when: false
+  failed_when: false  # Prevent task from failing if the CRD doesn't exist
+
 
 - name: Install ArgoCD
+  when: check_crd.stdout == ""  # Run only if the CRD is not found
   block:
     - name: Get the latest version of argocd-autopilot
       ansible.builtin.shell: |

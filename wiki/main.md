@@ -15,6 +15,7 @@ Topics:
 - [Job / cronjob ](docs/job_cronjob.md)
 - [Ingress](docs/ingress.md)
 - [Network Policy](docs/network_policy.md)
+- [Volumes](docs/volumes.md)
 
 Hints:
 - [Metric Server](docs/hints/metrics_server.md)

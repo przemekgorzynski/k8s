@@ -9,7 +9,7 @@ spec:
   source:
     repoURL: 'https://github.com/przemekgorzynski/k8s.git'
     targetRevision: HEAD # Consider using a specific branch or tag
-    path: helm-charts/metallb
+    path: workload/helm-charts/metallb
     helm:
       valueFiles: # List your value files here if applicable
         - values.yaml # Example value file

@@ -2,8 +2,10 @@
 
 - [Node preparation](#node-preparation)
 - [Initializaing K8s cluster](#initializaing-k8s-cluster)
-- [Exam Preparation && wiki](wiki/main.md)
+- [ArgoCD-Autopilot APP management](#argocd-autopilot-app-management)
 - [Support container](#support-container)
+- [Exam Preparation && wiki](wiki/main.md)
+
 
 
 ## Node preparation
@@ -83,14 +85,18 @@ ansible-playbok -i inventory bootstrap.yml
 ```
 
 
-## ArgoCD-Autopilot create APP
+## ArgoCD-Autopilot APP management
 
 ```bash
 argocd-autopilot project create default
 ```
 
 ```bash
-argocd-autopilot app create metal-lb --app https://github.com/przemekgorzynski/k8s_workload.git/apps/metal-lb/base --project default --wait-timeout 2m
+argocd-autopilot app create metal-lb --app https://github.com/przemekgorzynski/k8s.git/apps/metal-lb --project default --wait-timeout 2m
+```
+
+```bash
+argocd-autopilot app delete metal-lb
 ```
 
 ## Support container

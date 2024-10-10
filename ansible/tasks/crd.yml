@@ -1,0 +1,5 @@
+---
+- name: Deploying CRDs
+  ansible.builtin.command: "kubectl apply -f {{ item.url }}"
+  loop: "{{ crd }}"
+  when: item.present | bool

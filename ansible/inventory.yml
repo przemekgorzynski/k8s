@@ -22,8 +22,6 @@ all:
       - kubectl
     k8s_token: b0r7b8.8d1728519297d79c
     hosts_arch: arm64
-    crd:
-      - kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
 
   children:
     local:
@@ -41,6 +39,10 @@ all:
           enable_dashboard: false
           argocd:
             workload_repo: "https://github.com/przemekgorzynski/argocd-autopilot-boot.git"
+          crd:
+            - name: metallb
+              url: https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+              present: true
     nodes:
       hosts:
         k8s-node1:

@@ -12,6 +12,19 @@
     ```bash
     kubectl config set-context --current --namespace=ingress-nginx
     ```
+
+- Check permissions
+
+    ```bash
+    kubectl auth can-i delete nodes
+    ```
+
+- Check permissions as different user
+
+    ```bash
+    kubectl auth can-i delete nodes --as dev-user
+    ```
+
 ## PODS
 - Run pod
 

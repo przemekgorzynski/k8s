@@ -30,6 +30,8 @@ rules:
   - get
   - watch
   - list
+  resourceNames: # If we want to limit access eg. to 1 pod
+  - blue
 ---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1

@@ -16,7 +16,10 @@ Topics:
 - [Ingress](docs/ingress.md)
 - [Network Policy](docs/network_policy.md)
 - [Volumes](docs/volumes.md)
+- [Admission Controllers](docs/admission_controllers.md)
+- [CRD](docs/crd.md)
+
 
 Hints:
 - [Metric Server](docs/hints/metrics_server.md)
-- [Namespace stuck in Termination state](docs/hints/Namesoace_stuck_in_termination_state.md)s
+- [Namespace stuck in Termination state](docs/hints/Namesoace_stuck_in_termination_state.md)

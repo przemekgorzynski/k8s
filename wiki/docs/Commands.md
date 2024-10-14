@@ -7,6 +7,20 @@
 - [Rollouts](#rollouts)
 
 ## KUBECTL
+
+- Set proxy to API
+
+    ```bash
+    kubectl proxy 8001&
+    ```
+    Not can `curl localhost:8001/apis` to interact wirj Kube api
+
+- See API resources - namespaced is `true` or `false`
+
+    ```bash
+    kubectl api-resources --namespaced=false
+    ```
+
 - Switch to namespace
 
     ```bash
@@ -23,6 +37,12 @@
 
     ```bash
     kubectl auth can-i delete nodes --as dev-user
+    ```
+
+- Convert manifest to new API version
+
+    ```bash
+    kubectl convert -f nginx.yml --output-version apps/v1
     ```
 
 ## PODS

@@ -4,7 +4,7 @@
 - [Initializaing K8s cluster](#initializaing-k8s-cluster)
 - [ArgoCD-Autopilot APP management](#argocd-autopilot-app-management)
 - [Support container](#support-container)
-- [Exam Preparation && wiki](wiki/main.md)
+- [Wiki](wiki/main.md)
 
 
 

@@ -41,5 +41,5 @@ all:
             workload_repo: "https://github.com/przemekgorzynski/argocd-autopilot-boot.git"
     nodes:
       hosts:
-        k8s-node1:
+        k8s-node01:
           ansible_host: 10.0.0.101

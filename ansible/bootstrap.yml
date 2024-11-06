@@ -105,20 +105,20 @@
 
 ##################################################
 
-# - name: Deploy ArgoCD
-#   hosts: controlPlane
-#   gather_facts: true
+- name: Deploy ArgoCD
+  hosts: controlPlane
+  gather_facts: true
 
-#   pre_tasks:
-#     - name: Check connectivity
-#       action: ansible.builtin.ping
-#       tags:
-#         - pre
-#         - always
+  pre_tasks:
+    - name: Check connectivity
+      action: ansible.builtin.ping
+      tags:
+        - pre
+        - always
 
-#   tasks:
-#     - name: Deploy ArgoCD
-#       ansible.builtin.import_tasks:
-#         file: tasks/argocd_autopilot.yml
-#       tags:
-#         - argocd
+  tasks:
+    - name: Deploy ArgoCD
+      ansible.builtin.import_tasks:
+        file: tasks/argocd_autopilot.yml
+      tags:
+        - argocd

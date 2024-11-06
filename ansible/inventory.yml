@@ -39,6 +39,10 @@ all:
           enable_dashboard: false
           argocd:
             workload_repo: "https://github.com/przemekgorzynski/argocd-autopilot-boot.git"
+          crd:
+            - name: metallb
+              url: https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+              present: true
     nodes:
       hosts:
         k8s-node01:

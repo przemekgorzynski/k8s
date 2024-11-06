@@ -87,7 +87,7 @@
 
 - name: Fetch Kubeconfig to local
   hosts: controlPlane
-  gather_facts: true
+  gather_facts: false
 
   pre_tasks:
     - name: Check connectivity
@@ -107,7 +107,7 @@
 
 - name: Deploy ArgoCD
   hosts: controlPlane
-  gather_facts: true
+  gather_facts: false
 
   pre_tasks:
     - name: Check connectivity
@@ -122,3 +122,24 @@
         file: tasks/argocd_autopilot.yml
       tags:
         - argocd
+
+
+##################################################
+
+- name: Deploy CRDs
+  hosts: controlPlane
+  gather_facts: false
+
+  pre_tasks:
+    - name: Check connectivity
+      action: ansible.builtin.ping
+      tags:
+        - pre
+        - always
+
+  tasks:
+    - name: Deploy CRD
+      ansible.builtin.import_tasks:
+        file: tasks/crd.yml
+      tags:
+        - crd

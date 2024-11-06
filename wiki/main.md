@@ -22,4 +22,4 @@ Topics:
 
 Hints:
 - [Metric Server](docs/hints/metrics_server.md)
-- [Namespace stuck in Termination state](docs/hints/Namesoace_stuck_in_termination_state.md)
+- [Namespace stuck in Termination state](docs/hints/namesoace_stuck_in_termination_state.md)

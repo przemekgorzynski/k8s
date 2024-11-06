@@ -9,8 +9,8 @@
     - name: Check connectivity
       action: ansible.builtin.ping
       tags:
-        - pre
-        - always
+        - all
+        - pre_config
 
   tasks:
     - name: Base OS config
@@ -51,8 +51,8 @@
     - name: Check connectivity
       action: ansible.builtin.ping
       tags:
-        - pre
-        - always
+        - all
+        - kubeadm
 
   tasks:
     - name: Import Kubeadm tasks
@@ -73,8 +73,8 @@
     - name: Check connectivity
       action: ansible.builtin.ping
       tags:
-        - pre
-        - always
+        - all
+        - join_node
 
   tasks:
     - name: Import join nodes tasks
@@ -93,8 +93,8 @@
     - name: Check connectivity
       action: ansible.builtin.ping
       tags:
-        - pre
-        - always
+        - all
+        - fetch_config
 
   tasks:
     - name: Import fetch config tasks
@@ -113,8 +113,8 @@
     - name: Check connectivity
       action: ansible.builtin.ping
       tags:
-        - pre
-        - always
+        - all
+        - argocd
 
   tasks:
     - name: Deploy ArgoCD
@@ -122,7 +122,6 @@
         file: tasks/argocd_autopilot.yml
       tags:
         - argocd
-
 
 ##################################################
 
@@ -134,8 +133,8 @@
     - name: Check connectivity
       action: ansible.builtin.ping
       tags:
-        - pre
-        - always
+        - all
+        - crd
 
   tasks:
     - name: Deploy CRD
@@ -143,3 +142,23 @@
         file: tasks/crd.yml
       tags:
         - crd
+
+##################################################
+
+- name: Deploy Istio
+  hosts: controlPlane
+  gather_facts: false
+
+  pre_tasks:
+    - name: Check connectivity
+      action: ansible.builtin.ping
+      tags:
+        - all
+        - istio
+
+  tasks:
+    - name: Deploy Istio
+      ansible.builtin.import_tasks:
+        file: tasks/istio.yml
+      tags:
+        - istio

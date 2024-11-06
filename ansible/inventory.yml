@@ -43,6 +43,8 @@ all:
             - name: metallb
               url: https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
               present: true
+          istio:
+            version: 1.23.3
     nodes:
       hosts:
         k8s-node01:

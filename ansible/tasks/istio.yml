@@ -1,0 +1,38 @@
+- name: Download Istio
+  ansible.builtin.shell: |
+    curl -L https://istio.io/downloadIstio | ISTIO_VERSION={{ istio.version }} sh -
+  args:
+    chdir: "/tmp"
+  register: istio_download
+  ignore_errors: true
+
+- name: Check Istio download and installation status
+  ansible.builtin.fail:
+    msg: "Istio download and installation failed. Error: {{ istio_download.stderr }}"
+  when: istio_download.rc != 0
+
+- name: Add istioctl to PATH
+  ansible.builtin.shell: "ln -sf /tmp/istio-{{ istio.version }}/bin/istioctl /usr/local/bin/istioctl"
+  args:
+    creates: "/usr/local/bin/istioctl"
+  become: true
+  become_method: sudo
+  become_user: root
+
+- name: Install Istio with minimal profile and Ingress Gateway
+  ansible.builtin.shell: |
+    istioctl install \
+      --set profile=minimal \
+      --set components.ingressGateways[0].name=istio-ingressgateway \
+      --set components.ingressGateways[0].enabled=true \
+      --set values.gateways.istio-ingressgateway.type=LoadBalancer \
+      -y
+  environment:
+    PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
+  register: istio_install
+  ignore_errors: true
+
+- name: Check Istio installation status
+  ansible.builtin.fail:
+    msg: "Istio installation failed. Error: {{ istio_install.stderr }}"
+  when: istio_install.rc != 0

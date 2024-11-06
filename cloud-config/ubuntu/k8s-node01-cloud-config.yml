@@ -2,7 +2,7 @@
 # https://cloudinit.readthedocs.io/
 # https://cloudinit.readthedocs.io/en/latest/reference/examples.html
 
-hostname: k8s-node2
+hostname: k8s-node01
 manage_etc_hosts: false
 
 apt:
@@ -59,8 +59,8 @@ write_files:
   - path: /etc/hosts
     content: |
       10.0.0.100  k8s-master
-      10.0.0.101  k8s-node1
-      10.0.0.102  k8s-node2
+      10.0.0.101  k8s-node01
+      10.0.0.102  k8s-node02
     append: true
 
   # Create sudoers file for admins group

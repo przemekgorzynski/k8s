@@ -20,6 +20,7 @@ Topics:
 - [CRD](docs/crd.md)
 - [Cluster Upgrade](docs/cluster_upgrade.md)
 - [ETCD](docs/etcd.md)
+- [Pods](docs/pods.md)
 
 
 Hints:

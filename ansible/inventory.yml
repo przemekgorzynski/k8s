@@ -37,8 +37,6 @@ all:
           pod_network_cidr: "10.244.0.0/16"
           kubeadmin_config: /etc/kubernetes/admin.conf
           enable_dashboard: false
-          argocd:
-            workload_repo: "https://github.com/przemekgorzynski/argocd-autopilot-boot.git"
           crd:
             - name: metallb
               url: https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml

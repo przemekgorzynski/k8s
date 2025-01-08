@@ -2,7 +2,6 @@
 
 - [Node preparation](#node-preparation)
 - [Initializaing K8s cluster](#initializaing-k8s-cluster)
-- [ArgoCD-Autopilot APP management](#argocd-autopilot-app-management)
 - [Support container](#support-container)
 - [Wiki](wiki/main.md)
 
@@ -54,27 +53,13 @@ Creating SSH configuration...
 Copying cloud-config/ubuntu/k8s-master-cloud-config.yml file
 ```
 
-
 ## Initializaing K8s cluster
-
-By default cluster comes with ArgoCD pre-installed using ArgoCD Autopilot
-
-https://argocd-autopilot.readthedocs.io/en/stable/
-
-Before cluster initialization:
-
-- set Bitwarden access token variable. Will be used while fetching gh_token for `ArgoCD Autopilot` setting up.
-
-```bash
-export BWS_ACCESS_TOKEN=0.57ff9fdc-db91-4ec7-806.....<< redacted >>
-```
 
 - install Ansible collections && Python Bitwaden libraries
 
 ```bash
 cd ansible && \
-ansible-galaxy collection install -r requirments.yml && \
-pip install bitwarden-sdk
+ansible-galaxy collection install -r requirments.yml
 ``` 
 
 To create K8s cluster on previously prepared nodes just run Ansible playbook
@@ -84,20 +69,6 @@ cd ansible && \
 ansible-playbok -i inventory bootstrap.yml
 ```
 
-
-## ArgoCD-Autopilot APP management
-
-```bash
-argocd-autopilot project create default
-```
-
-```bash
-argocd-autopilot app create metallb --app https://github.com/przemekgorzynski/k8s.git/workloads/argocd-apps/metallb --project default --wait-timeout 5m
-```
-
-```bash
-argocd-autopilot app delete metallb
-```
 
 ## Support container
 You can use support container to interact with cluster. It some tools preinstalled

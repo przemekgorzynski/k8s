@@ -13,6 +13,8 @@
 # Networking
 - [Ingress](docs/ingress.md)
 - [Network Policy](docs/network_policy.md)
+- [DNS](docs/dns.md)
+- [Network_info](docs/network_info.md)
 
 # Workload
 - [Resource Requirements](docs/resource_requirements.md)

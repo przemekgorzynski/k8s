@@ -1,0 +1,23 @@
+
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- busybox/
+- nginx/
+
+# Kustomization needs to be made
+labels:
+  - includeSelectors: true
+    pairs:
+      company: GorillaBay
+
+namespace: GorillaBay
+namePrefix: GorillaBay-
+nameSuffix: -dev
+commonAnnotations:
+  branch: master
+images:
+  - name: apache:latest
+    newName: nginx
+    newTag: "2.4"

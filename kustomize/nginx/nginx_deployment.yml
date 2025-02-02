@@ -16,4 +16,4 @@ spec:
     spec:
       containers:
       - name: web
-        image: apache:latest
+        image: nginx:latest

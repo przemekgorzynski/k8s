@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
 - busybox/
 - nginx/
+- namespace/
 
 # Kustomization needs to be made
 labels:
@@ -12,12 +13,10 @@ labels:
     pairs:
       company: GorillaBay
 
-namespace: GorillaBay
-namePrefix: GorillaBay-
-nameSuffix: -dev
+namespace: gorillabay
 commonAnnotations:
   branch: master
 images:
-  - name: apache:latest
+  - name: nginx:latest
     newName: nginx
-    newTag: "2.4"
+    newTag: "1.27.3"

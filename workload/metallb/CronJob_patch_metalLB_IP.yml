@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: patch-metallb-ip
+spec:
+  schedule: "0 * * * *"  # Runs every hour (adjust as needed)
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: cronjob-service-account  # Use the service account here
+          containers:
+          - name: patch-metallb-ip
+            image: alpine/curl:latest  # Or any image with curl
+            command:
+            - /bin/sh
+            - -c
+            - |
+              external_ip=$(curl -s ifconfig.me)
+              echo "External IP: $external_ip"
+
+              curl --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt -X PATCH https://kubernetes.default.svc/apis/metallb.io/v1beta1/namespaces/metallb-system/ipaddresspools/metallb-address-pool \
+                -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
+                -H "Content-Type: application/merge-patch+json" \
+                -d "{\"spec\": {\"addresses\": [\"$external_ip/32\"]}}"
+
+            env:
+            - name: KUBERNETES_SERVICE_HOST
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: KUBERNETES_SERVICE_PORT
+              value: "443"
+          restartPolicy: OnFailure

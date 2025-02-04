@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- nginx_deployment.yml
+- nginx_service.yml
+
+replicas:
+  - name: nginx-deployment
+    count: 1  # New value for replicas
+
+# Kustomization needs to be made
+labels:
+  - includeSelectors: true
+    pairs:
+      app: nginx

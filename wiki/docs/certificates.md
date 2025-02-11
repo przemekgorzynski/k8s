@@ -24,7 +24,7 @@ openssl req -new -key ${k8s_username}.key -out ${k8s_username}.csr -subj "/CN=${
 ## Create env variable to capture CSR_DATA
 
 ```bash
-CSR_DATA=$(base64 ${k8s_username} | tr -d '\n')
+CSR_DATA=$(base64 ${k8s_username}.csr | tr -d '\n')
 ```
 
 ## Create Kubernetes CAR YAML

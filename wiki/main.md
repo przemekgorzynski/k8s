@@ -25,6 +25,7 @@
 - [Deployments - blue-green / canary](docs/blue_green_canary.md)
 - [Job / cronjob ](docs/job_cronjob.md)
 - [Pods](docs/pods.md)
+- [Horizontal Pod Autoscaler](docs/hpa.md)
 
 # Volumes
 - [Volumes](docs/volumes.md)

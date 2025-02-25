@@ -11,6 +11,7 @@
 - [Admission Controllers](docs/admission_controllers.md)
 
 # Networking
+- [Gateway API](docs/gateway_api.md)
 - [Ingress](docs/ingress.md)
 - [Network Policy](docs/network_policy.md)
 - [DNS](docs/dns.md)
@@ -18,14 +19,18 @@
 
 # Workload
 - [Resource Requirements](docs/resource_requirements.md)
-- [Taints and Tolerations](docs/taint_tolerations.md)
-- [Node Selector](docs/node_selector.md)
-- [Node Affinity](docs/node_affinity.md)
 - [Liveness & Rediness Probe](docs/liveness_rediness_probe.md)
 - [Deployments - blue-green / canary](docs/blue_green_canary.md)
 - [Job / cronjob ](docs/job_cronjob.md)
 - [Pods](docs/pods.md)
-- [Horizontal Pod Autoscaler](docs/hpa.md)
+- [Horizontal Pod Autoscaler](docs/HorizontalPodAutoscaler.md)
+- [Pod Disruption Budget](docs/PodDisruptionBudget.md)
+
+# Scheduling
+- [Taints and Tolerations](docs/taint_tolerations.md)
+- [Node Selector](docs/node_selector.md)
+- [Node Affinity](docs/node_affinity.md)
+- [Pod Affinity](docs/pod_affinity.md)
 
 # Volumes
 - [Volumes](docs/volumes.md)

@@ -51,3 +51,9 @@ behavior:
 - Scale-Down
     - Waits 5 minutes (stabilizationWindowSeconds: 300) before reducing pods to prevent rapid fluctuations.
     - Removes 50% of pods every 15s → Ensures controlled scaling down.
+
+# Generate  high load
+
+```bash
+kubectl run -i --tty load-generator1 --image=busybox -- /bin/sh -c "while true; do wget -q -O- http://nginx-service; done"
+```

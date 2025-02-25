@@ -35,6 +35,9 @@
 - [Cluster Upgrade](docs/cluster_upgrade.md)
 - [ETCD](docs/etcd.md)
 
+# HELM
+- [Helm basics](docs/helm/basics.md)
+
 # Hints
 - [Metric Server](docs/hints/metrics_server.md)
 - [Namespace stuck in Termination state](docs/hints/namespace_stuck_in_termination_state.md)

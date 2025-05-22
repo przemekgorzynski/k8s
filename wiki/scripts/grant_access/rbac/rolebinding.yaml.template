@@ -1,8 +1,8 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{USERNAME}}-default-access
-  namespace: default
+  name: {{USERNAME}}-access
+  namespace: {{NAMESPACE}}
 subjects:
 - kind: User
   name: {{USERNAME}}

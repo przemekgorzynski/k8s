@@ -9,8 +9,8 @@ else
 fi
 
 # Validate required variables
-if [[ -z "$k8s_username" || -z "$k8s_group" ]]; then
-  echo "❌ 'k8s_username' and/or 'k8s_group' are not defined in input.txt"
+if [[ -z "$k8s_username" || -z "$k8s_group" || -z "$k8s_namespace" ]]; then
+  echo "❌ 'k8s_username', 'k8s_group', and/or 'k8s_namespace' are not defined in input.txt"
   exit 1
 fi
 
@@ -96,10 +96,10 @@ echo "✅ Final kubeconfig generated: ${work_dir}/${KUBECONFIG_FILE}"
 # Step 8.5: Apply namespace-level permissions
 cd .. || exit 1
 
-if [[ -f ./grant_default_namespace_access.sh ]]; then
-  ./grant_default_namespace_access.sh
+if [[ -f ./grant_namespace_access.sh ]]; then
+  ./grant_namespace_access.sh
 else
-  echo "⚠️ Permissions script 'grant_default_namespace_access.sh' not found. Skipping RBAC setup."
+  echo "⚠️ Permissions script 'grant_dnamespace_access.sh' not found. Skipping RBAC setup."
 fi
 
 cd "${work_dir}" || exit 1
@@ -111,9 +111,9 @@ echo "🧹 Cleaned up intermediate files (.csr, ca.crt)"
 # Step 10: Test kubeconfig
 echo "🔍 Testing access with the new kubeconfig..."
 
-kubectl --kubeconfig="${KUBECONFIG_FILE}" get pods -n default &> test_output.txt
+kubectl --kubeconfig="${KUBECONFIG_FILE}" get pods -n "${k8s_namespace}" &> test_output.txt
 if [[ $? -eq 0 ]]; then
-  echo "✅ Kubeconfig works. '${k8s_username}' can list pods in the 'default' namespace."
+  echo "✅ Kubeconfig works. '${k8s_username}' can list pods in the '${k8s_namespace}' namespace."
 else
   echo "❌ Kubeconfig test failed. Access denied or configuration is broken."
   cat test_output.txt

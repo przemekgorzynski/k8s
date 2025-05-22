@@ -1,0 +1,2 @@
+export k8s_username=batman
+export k8s_group="Cluster-superheroes"

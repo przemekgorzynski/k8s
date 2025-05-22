@@ -18,7 +18,7 @@ openssl genrsa -out ${k8s_username}.key 4096
 ## Generate CSR - certificate signing request
 
 ```bash
-openssl req -new -key ${k8s_username}.key -out ${k8s_username}.csr -subj "/CN=${k8s_username}/0=${k8s_group}" -sha256
+openssl req -new -key ${k8s_username}.key -out ${k8s_username}.csr -subj "/CN=${k8s_username}/O=${k8s_group}" -sha256
 ```
 
 ## Create env variable to capture CSR_DATA
@@ -37,7 +37,7 @@ metadata:
   name: ${k8s_username}
 spec:
   request: ${CSR_DATA}
-  signerName: kubernetes.io/kubelet-apiserver-client
+  signerName: kubernetes.io/kube-apiserver-client
   usages:
   - client auth
 EOF
@@ -52,7 +52,7 @@ metadata:
   name: batman
 spec:
   request: <<BASE64ENCODEDCSR>>
-  signerName: kubernetes.io/kubelet-apiserver-client
+  signerName: kubernetes.io/kube-apiserver-client
   usages:
   - client auth
 ```

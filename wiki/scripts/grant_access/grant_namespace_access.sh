@@ -4,8 +4,8 @@
 source ./input.txt
 
 # Validate inputs
-if [[ -z "$k8s_username" || -z "$k8s_namespace" ]]; then
-  echo "❌ 'k8s_username' or 'k8s_namespace' not set in input.txt"
+if [[ -z "$k8s_username" || -z "$k8s_group" || -z "$k8s_namespace" ]]; then
+  echo "❌ 'k8s_username', 'k8s_group', or 'k8s_namespace' not set in input.txt"
   exit 1
 fi
 
@@ -16,7 +16,7 @@ sed "s/{{NAMESPACE}}/${k8s_namespace}/g" rbac/role.yaml.template > rbac/role.yam
 kubectl apply -f rbac/role.yaml
 
 # Generate RoleBinding from template
-sed "s/{{USERNAME}}/${k8s_username}/g; s/{{NAMESPACE}}/${k8s_namespace}/g" \
+sed "s/{{GROUP}}/${k8s_group}/g; s/{{NAMESPACE}}/${k8s_namespace}/g" \
   rbac/rolebinding.yaml.template > rbac/rolebinding.yaml
 
 # Apply RoleBinding

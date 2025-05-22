@@ -117,7 +117,7 @@ cloud_init() {
 # Define the device to unmount and format
 DEVICE=$1
 NODE_FUNCTION=$2
-VERSION="24.04.1"
+VERSION="24.04.2"
 OUTPUT_FILE="/tmp/ubuntu-$VERSION-preinstalled-server-arm64+raspi.img.xz"
 UNPACKED_FILE="/tmp/ubuntu-$VERSION-preinstalled-server-arm64+raspi.img"
 BOOT_PARTITION="${DEVICE}p1"

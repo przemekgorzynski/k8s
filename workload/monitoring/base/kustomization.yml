@@ -1,10 +1,7 @@
 resources:
   - namespace.yml
-  - prometheus/deployment.yml
+  - prometheus/service-account.yml
+  - prometheus/statefulset.yml
   - prometheus/service.yml
-  - prometheus/config-map.yml
-  - alertmanager/deployment.yml
+  - alertmanager/statefulset.yml
   - alertmanager/service.yml
-  - alertmanager/config-map.yml
-
-  # - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml  # metric server

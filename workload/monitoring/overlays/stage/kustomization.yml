@@ -12,5 +12,13 @@ labels:
       stack: monitoring
       env: stage
 
-# patches:
-#   - path: patch-metrics-server-deployment.yml
+configMapGenerator:
+  - name: prometheus-config
+    files:
+      - prometheus/prometheus.yml
+      - prometheus/rule.yml
+  - name: alertmanager-config
+    files:
+      - alertmanager/alertmanager.yml
+generatorOptions:
+  disableNameSuffixHash: false

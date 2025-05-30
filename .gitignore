@@ -1,3 +1,6 @@
 env_setup.sh
 
 workload/nginx_ingress/charts
+
+*.env
+.env

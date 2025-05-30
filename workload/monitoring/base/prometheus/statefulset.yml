@@ -14,8 +14,6 @@ spec:
     metadata:
       labels:
         app: prometheus
-      annotations:
-        checksum/config: "{{ lookup('file', './config-map.yml') | hash('sha256') }}"
     spec:
       serviceAccountName: prometheus
       containers:

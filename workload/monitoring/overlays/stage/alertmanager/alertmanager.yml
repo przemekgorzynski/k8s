@@ -6,6 +6,25 @@ route:
   group_wait: 10s
   group_interval: 10s
   repeat_interval: 1h
+  routes:
+  - match:
+      notification: metric_endpoint_down
+    receiver: metric_endpoint_down
 
 receivers:
   - name: default
+  - name: metric_endpoint_down
+    slack_configs:
+      - channel: sandbox
+        send_resolved: true
+        api_url: https://slack.com/api/chat.postMessage
+        http_config:
+          authorization:
+            credentials: "${SLACK_NOTIFY_BOT_OAUTH_TOKEN}"
+        color: '{{ if eq .Status "resolved" }}good{{ else if eq .CommonLabels.severity "critical" }}danger{{ else if eq .CommonLabels.severity "warning" }}warning{{ else }}good{{ end }}'
+        text: |-
+          {{ if eq .CommonLabels.severity "critical" }}:rotating_light:{{ else if eq .CommonLabels.severity "warning" }}:warning:{{ else }}:information_source:{{ end }} *Alert:* {{ .CommonAnnotations.summary }}
+          *Severity:* {{ .CommonLabels.severity }}
+          *Details:* {{ .CommonAnnotations.description }}
+          *Status:* {{ .Status }}
+          *Job:* {{ .CommonLabels.job }}

@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: local-path-provisioner
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: infrastructure
+    app.kubernetes.io/app: rancher-local-storage
+spec:
+  project: infrastructure
+
+  # Tell Argo CD where your manifests live
+  source:
+    repoURL: https://github.com/rancher/local-path-provisioner.git
+    targetRevision: v0.0.31      # pin the version you want
+    path: deploy                 # directory inside the repo containing the YAML
+    kustomize:
+      commonAnnotations:
+        storageclass.kubernetes.io/is-default-class: "true"
+
+  # Where to deploy them
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: local-path-storage
+
+  # Optional: make it auto-sync and self-heal
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

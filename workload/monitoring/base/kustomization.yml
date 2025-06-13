@@ -1,7 +1,0 @@
-resources:
-  - namespace.yml
-  - prometheus/service-account.yml
-  - prometheus/statefulset.yml
-  - prometheus/service.yml
-  - alertmanager/statefulset.yml
-  - alertmanager/service.yml

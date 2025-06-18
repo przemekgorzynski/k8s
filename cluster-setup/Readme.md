@@ -1,69 +1,69 @@
-# Table of content
+# 🚀 Kubernetes Cluster Setup & Cleanup Scripts
 
-- [Node preparation](#node-preparation)
-- [Initializaing K8s cluster](#initializaing-k8s-cluster)
-- [Wiki](wiki/main.md)
+This repository contains helper scripts for initializing or resetting a Kubernetes single-node cluster using `kubeadm`, `containerd`, and Flannel CNI. Supports both **local and remote execution**.
 
+---
 
+## 🧼 Cluster Cleanup
 
-## Node preparation
+Use this to fully reset and remove an existing Kubernetes installation from a node.
 
-To patch SD card for k8s node execute script
+### 🔧 Run on remote host:
 
 ```bash
-sudo ./prepare_sd_card.sh DEVICE NODE_FUNCTION
+./bash-scripts/run-remote.sh cleanup
 ```
 
-- `DEVICE` - /dev/mmcblk0
-- `NODE_FUNCTION` - one of: master, node1, node2
+> This resets kubeadm, removes Kubernetes-related files, packages, and optionally containerd.
 
-What script does:
-* Download Ubuntu image
-* Format SD card
-* Copy downloaded .img to card
-* Copy cloud image config file to SD card
+---
 
-Example run:
+## 📆 Install Kubernetes Master Node
+
+You can run the setup **remotely** or **locally**, depending on your scenario.
+
+### 🌐 Remote installation
 
 ```bash
-sudo ./prepare_sd_card.sh /dev/mmcblk0 master
-##### Running function: check_sudo #####
-OK - running as root
-
-##### Running function: download_img_file #####
-The image file already exists at /tmp/ubuntu-24.04.1-preinstalled-server-arm64+raspi.img. No need to download.
-
-##### Running function: format_sd_card #####
-Formatting /dev/mmcblk0 as FAT32...
-mkfs.fat 4.2 (2021-01-31)
-Successfully formatted /dev/mmcblk0 as FAT32.
-
-##### Running function: write_img_to_sd_card #####
-Writing /tmp/ubuntu-24.04.1-preinstalled-server-arm64+raspi.img to /dev/mmcblk0...
-3644850176 bytes (3,6 GB, 3,4 GiB) copied, 77 s, 47,3 MB/s3675607040 bytes (3,7 GB, 3,4 GiB) copied, 77,8975 s, 47,2 MB/s
-
-876+1 records in
-876+1 records out
-3675607040 bytes (3,7 GB, 3,4 GiB) copied, 104,268 s, 35,3 MB/s
-Successfully wrote /tmp/ubuntu-24.04.1-preinstalled-server-arm64+raspi.img to /dev/mmcblk0.
-
-##### Running function: cloud_init #####
-Creating SSH configuration...
-Copying cloud-config/ubuntu/k8s-master-cloud-config.yml file
+./bash-scripts/run-remote-setup.sh deploy
 ```
 
-## Initializaing K8s cluster
+This script:
 
-- install Ansible collections && Python Bitwaden libraries
+- Uploads `setup-k8s-master.sh` and `kubeadm-config.yml` to the remote host
+- Executes them with `sudo`
+- Initializes the Kubernetes master node on that machine
 
-```bash
-cd ansible && \
-ansible-galaxy collection install -r requirments.yml
-``` 
-
-To create K8s cluster on previously prepared nodes just run Ansible playbook
+### 🖥️ Local installation
 
 ```bash
-cd ansible && \
-ansible-playbok -i inventory bootstrap.yml
+sudo ./bash-scripts/setup-k8s-master.sh
 ```
+
+Make sure `kubeadm-config.yml` is in the **same directory** as the script.
+
+---
+
+## 📁 Files
+
+| File                  | Description                               |
+| --------------------- | ----------------------------------------- |
+| `setup-k8s-master.sh` | Main script to install Kubernetes master  |
+| `kubeadm-config.yml`  | Cluster configuration for `kubeadm init`  |
+| `cleanup-cluster.sh`  | Full Kubernetes reset/cleanup script      |
+| `run-remote-setup.sh` | Wrapper script for remote setup execution |
+
+---
+
+## ✅ After Installation
+
+Once the setup completes, log in and run:
+
+```bash
+kubectl get nodes
+kubectl get pods -n kube-system
+```
+
+The script will also guide you on how to generate the **join command** for worker nodes.
+
+---
